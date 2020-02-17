@@ -48,7 +48,8 @@ extension TypesExtension on TypeEnum {
       case TypeEnum.water:
         return Image.asset('assets/images/water.png');
       case TypeEnum.bug:
-        return Image.asset('assets/images/bug.png');
+        // Não tem o icone bug.png
+        return Image.asset('assets/images/normal.png');
       case TypeEnum.normal:
         return Image.asset('assets/images/normal.png');
       case TypeEnum.electric:

@@ -19,6 +19,8 @@ class PokemonDetailPage extends StatefulWidget {
 
 class _PokemonDetailPageState extends State<PokemonDetailPage> {
   Pokemon _pokemon;
+  bool _showStatsBar = false;
+  bool _showPokemonDetails = false;
 
   _getPokemon() async {
     _pokemon = await PokemonApi().getPokemon(widget.pokemonId);
@@ -41,9 +43,22 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
               .map((stat) => PokemonStat(
                     stat: stat,
                     color: widget.primaryType.color,
+                    showBar: _showStatsBar,
                   ))
               .toList()),
     );
+  }
+
+  _completeStatsBar() {
+    setState(() {
+      _showStatsBar = true;
+    });
+  }
+
+  _updateShowPokemonDetails() {
+    setState(() {
+      _showPokemonDetails = true;
+    });
   }
 
   Widget _mainComponent() {
@@ -54,20 +69,21 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
       );
     }
 
+    Future.delayed(Duration(milliseconds: 25), () => _completeStatsBar());
     return Column(
       children: [
         Text(
           _pokemon.name,
-          style: TextStyle(fontSize: 24),
+          style: TextStyle(fontSize: 36),
         ),
-        Container(height: 16),
+        Container(height: 24),
         _getTypes(),
-        Container(height: 16),
+        Container(height: 24),
         Text(
           _pokemon.description,
-          style: TextStyle(fontSize: 14),
+          style: TextStyle(fontSize: 16),
         ),
-        Container(height: 16),
+        Container(height: 24),
         Text(
           'Stats',
           style: TextStyle(
@@ -80,20 +96,13 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Stack(
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.topLeft,
-              colors: [widget.primaryType.color.withOpacity(0.7), widget.primaryType.color],
-            ),
-          ),
-          child: Align(
+  Widget _showContent() {
+    Future.delayed(
+        Duration(milliseconds: 1000), () => _updateShowPokemonDetails());
+
+    return !_showPokemonDetails
+        ? Container()
+        : Align(
             alignment: Alignment.bottomCenter,
             child: Container(
               height: MediaQuery.of(context).size.height * 0.8,
@@ -109,10 +118,31 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
                 child: _mainComponent(),
               ),
             ),
+          );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Stack(
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.topLeft,
+              colors: [
+                widget.primaryType.color.withOpacity(0.7),
+                widget.primaryType.color
+              ],
+            ),
           ),
+          child: _showContent(),
         ),
-        Align(
-          alignment: Alignment.topCenter,
+        AnimatedContainer(
+          duration: Duration(milliseconds: 500),
+          alignment:
+              _showPokemonDetails ? Alignment.topCenter : Alignment.center,
           child: Padding(
             padding: const EdgeInsets.only(top: 36.0),
             child: Container(

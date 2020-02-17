@@ -4,8 +4,9 @@ import 'package:pokedex_app/models/stat.dart';
 class PokemonStat extends StatelessWidget {
   final Stat stat;
   final Color color;
+  final bool showBar;
 
-  PokemonStat({this.stat, this.color});
+  PokemonStat({this.stat, this.color, this.showBar});
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +44,10 @@ class PokemonStat extends StatelessWidget {
                           ]),
                     ),
                   ),
-                  Container(
+                  AnimatedContainer(
                     height: 8,
-                    width: stat.value.toDouble() * 2,
+                    width: showBar ? stat.value.toDouble() * 2 : 0,
+                    duration: Duration(milliseconds: 250),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       gradient: LinearGradient(
