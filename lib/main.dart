@@ -9,6 +9,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pokedex App',
+      theme: ThemeData(
+        cursorColor: Colors.black54,
+        hintColor: Colors.black54,
+      ),
       home: HomePage(),
     );
   }

@@ -23,12 +23,15 @@ class _HomePageState extends State<HomePage> {
       return Loader();
     }
 
-    return Container(
-      child: ListView.builder(
-        itemCount: _pokemons.length,
-        itemBuilder: (context, index) {
-          return PokemonListItem(pokemon: _pokemons[index]);
-        },
+    return Padding(
+      padding: const EdgeInsets.only(top: 100),
+      child: Container(
+        child: ListView.builder(
+          itemCount: _pokemons.length,
+          itemBuilder: (context, index) {
+            return PokemonListItem(pokemon: _pokemons[index]);
+          },
+        ),
       ),
     );
   }
@@ -36,19 +39,77 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: Icon(Icons.category), title: Text("Pokemon")),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.add_box), title: Text("Moves")),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.assignment_returned), title: Text("Items")),
+      backgroundColor: Colors.white,
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(Icons.category), title: Text("Pokemon")),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.add_box), title: Text("Moves")),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.assignment_returned), title: Text("Items")),
+        ],
+      ),
+      body: SafeArea(
+        child: Stack(
+          children: <Widget>[
+            Container(
+              height: 100,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  Colors.lightBlueAccent.withOpacity(0.3),
+                  Colors.lightGreenAccent.withOpacity(0.3)
+                ]),
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(height: 16),
+                  Text(
+                    "Pokemon",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                  Container(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    child: Container(
+                      height: 36,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.3),
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      child: TextField(
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: Colors.black54,
+                            ),
+                            suffixIcon: Icon(
+                              Icons.mic,
+                              color: Colors.black54,
+                            ),
+                            hintText: "Search",
+                            border: InputBorder.none),
+                      ),
+                    ),
+                  ),
+                  Container(height: 10),
+                  Container(
+                    height: 4,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                        Colors.lightBlueAccent,
+                        Colors.lightGreenAccent,
+                      ]),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            _mainContainer(),
           ],
         ),
-        appBar: AppBar(
-          backgroundColor: Colors.greenAccent,
-        ),
-        body: _mainContainer());
+      ),
+    );
   }
 }

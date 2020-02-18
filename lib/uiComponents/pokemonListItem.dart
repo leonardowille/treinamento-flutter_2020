@@ -52,18 +52,27 @@ class PokemonListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(pokemon.name),
-                    Text('#${pokemon.id.padLeft(3, "0")}'),
+                    Text(
+                      pokemon.name,
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                    ),
+                    Text(
+                      '#${pokemon.id.padLeft(3, "0")}',
+                      style: TextStyle(color: Colors.grey),
+                    ),
                   ],
                 ),
                 Spacer(),
                 _getTypes()
               ],
             ),
-            Container(
-              height: 1,
-              width: double.infinity,
-              color: Colors.grey,
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Container(
+                height: 1,
+                width: double.infinity,
+                color: Colors.grey.withOpacity(0.4),
+              ),
             )
           ],
         ),
