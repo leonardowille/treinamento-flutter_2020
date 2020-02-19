@@ -4,7 +4,7 @@ import 'package:pokedex_app/enums/typesEnum.dart';
 import 'package:pokedex_app/models/pokemon.dart';
 import 'package:pokedex_app/uiComponents/loader.dart';
 import 'package:pokedex_app/uiComponents/pokemonStat.dart';
-import 'package:pokedex_app/uiComponents/pokemonTypeLabel.dart';
+import 'package:pokedex_app/uiComponents/pokemonType.dart';
 
 class PokemonDetailPage extends StatefulWidget {
   @override
@@ -31,7 +31,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
     return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: _pokemon.types
-            .map((type) => PokemonTypeLabel(typeEnum: type))
+            .map((type) => PokemonType(typeEnum: type, showLabel: true))
             .toList());
   }
 

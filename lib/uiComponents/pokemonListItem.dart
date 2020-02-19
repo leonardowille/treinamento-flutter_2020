@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex_app/models/pokemon.dart';
 import 'package:pokedex_app/pages/pokemonDetailPage.dart';
-import 'package:pokedex_app/uiComponents/pokemonTypeCircle.dart';
+import 'package:pokedex_app/uiComponents/pokemonType.dart';
 
 class PokemonListItem extends StatelessWidget {
   final Pokemon pokemon;
@@ -11,7 +11,7 @@ class PokemonListItem extends StatelessWidget {
   Widget _getTypes() {
     return Row(
       children: pokemon.types
-          .map((type) => PokemonTypeCircle(typeEnum: type))
+          .map((type) => PokemonType(typeEnum: type, showLabel: false))
           .toList(),
     );
   }
