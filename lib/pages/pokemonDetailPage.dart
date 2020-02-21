@@ -145,9 +145,10 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
               _showPokemonDetails ? Alignment.topCenter : Alignment.center,
           child: Padding(
             padding: const EdgeInsets.only(top: 36.0),
-            child: Container(
-              height: 150,
-              width: 150,
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              height: _showPokemonDetails ? 150 : 300,
+              width: _showPokemonDetails ? 150 : 300,
               child: Image.network(widget.image),
             ),
           ),
