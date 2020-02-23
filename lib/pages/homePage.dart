@@ -11,25 +11,46 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Pokemon> _pokemons;
+  List<Pokemon> _pokemonsFiltered;
+  TextEditingController _filterInputController = TextEditingController();
+
+  _filterPokemonList() {
+    if (_pokemons != null && _pokemons.isNotEmpty) {
+      List<Pokemon> pokes = [];
+      if (_filterInputController != null && _filterInputController.text != "") {
+        _pokemons.forEach((pokemon) => {
+              if (pokemon.name.contains(_filterInputController.text))
+                {pokes.add(pokemon)}
+            });
+      } else {
+        pokes = _pokemons;
+      }
+
+      setState(() {
+        _pokemonsFiltered = pokes;
+      });
+    }
+  }
 
   _getPokemons() async {
     _pokemons = await PokemonApi().getPokemons();
+    _pokemonsFiltered = _pokemons;
     setState(() {});
   }
 
   Widget _mainContainer() {
-    if (_pokemons == null) {
+    if (_pokemonsFiltered == null) {
       _getPokemons();
       return Loader();
     }
 
     return Padding(
-      padding: const EdgeInsets.only(top: 100, bottom: 60),
+      padding: const EdgeInsets.only(top: 100),
       child: Container(
         child: ListView.builder(
-          itemCount: _pokemons.length,
+          itemCount: _pokemonsFiltered.length,
           itemBuilder: (context, index) {
-            return PokemonListItem(pokemon: _pokemons[index]);
+            return PokemonListItem(pokemon: _pokemonsFiltered[index]);
           },
         ),
       ),
@@ -37,9 +58,62 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    _filterInputController.addListener(_filterPokemonList);
+  }
+
+  @override
+  void dispose() {
+    _filterInputController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      bottomNavigationBar: Container(
+        height: 60,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Colors.lightBlueAccent, Colors.lightGreenAccent]),
+        ),
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 4,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  Colors.lightBlueAccent,
+                  Colors.lightGreenAccent,
+                ]),
+              ),
+            ),
+            Theme(
+              data: Theme.of(context).copyWith(
+                  primaryColor: Colors.black,
+                  textTheme: Theme.of(context)
+                      .textTheme
+                      .copyWith(caption: new TextStyle(color: Colors.grey))),
+              child: BottomNavigationBar(
+                backgroundColor: Colors.white.withOpacity(0.7),
+                items: <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.category), title: Text("Pokemon")),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.add_box), title: Text("Moves")),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.assignment_returned),
+                      title: Text("Items")),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
         child: Stack(
           children: <Widget>[
@@ -79,6 +153,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             hintText: "Search",
                             border: InputBorder.none),
+                        controller: _filterInputController,
                       ),
                     ),
                   ),
@@ -97,52 +172,10 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             _mainContainer(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: 60,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    Colors.lightBlueAccent,
-                    Colors.lightGreenAccent
-                  ]),
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: 4,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                          Colors.lightBlueAccent,
-                          Colors.lightGreenAccent,
-                        ]),
-                      ),
-                    ),
-                    Theme(
-                      data: Theme.of(context).copyWith(
-                          // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-                          primaryColor: Colors.black,
-                          textTheme: Theme.of(context).textTheme.copyWith(
-                              caption: new TextStyle(color: Colors.grey))),
-                      child: BottomNavigationBar(
-                        backgroundColor: Colors.white.withOpacity(0.7),
-                        items: <BottomNavigationBarItem>[
-                          BottomNavigationBarItem(
-                              icon: Icon(Icons.category),
-                              title: Text("Pokemon")),
-                          BottomNavigationBarItem(
-                              icon: Icon(Icons.add_box), title: Text("Moves")),
-                          BottomNavigationBarItem(
-                              icon: Icon(Icons.assignment_returned),
-                              title: Text("Items")),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+//            Align(
+//              alignment: Alignment.bottomCenter,
+//              child:
+//            ),
           ],
         ),
       ),
