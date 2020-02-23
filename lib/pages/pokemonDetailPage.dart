@@ -31,7 +31,11 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
     return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: _pokemon.types
-            .map((type) => PokemonType(typeEnum: type, showLabel: true))
+            .map((type) => PokemonType(
+                  typeEnum: type,
+                  showLabel: true,
+                  enableAction: false,
+                ))
             .toList());
   }
 
