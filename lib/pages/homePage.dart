@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(top: 100),
+      padding: const EdgeInsets.only(top: 100, bottom: 60),
       child: Container(
         child: ListView.builder(
           itemCount: _pokemons.length,
@@ -40,16 +40,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(Icons.category), title: Text("Pokemon")),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.add_box), title: Text("Moves")),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.assignment_returned), title: Text("Items")),
-        ],
-      ),
       body: SafeArea(
         child: Stack(
           children: <Widget>[
@@ -107,6 +97,52 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             _mainContainer(),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: 60,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                    Colors.lightBlueAccent,
+                    Colors.lightGreenAccent
+                  ]),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: 4,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(colors: [
+                          Colors.lightBlueAccent,
+                          Colors.lightGreenAccent,
+                        ]),
+                      ),
+                    ),
+                    Theme(
+                      data: Theme.of(context).copyWith(
+                          // sets the active color of the `BottomNavigationBar` if `Brightness` is light
+                          primaryColor: Colors.black,
+                          textTheme: Theme.of(context).textTheme.copyWith(
+                              caption: new TextStyle(color: Colors.grey))),
+                      child: BottomNavigationBar(
+                        backgroundColor: Colors.white.withOpacity(0.7),
+                        items: <BottomNavigationBarItem>[
+                          BottomNavigationBarItem(
+                              icon: Icon(Icons.category),
+                              title: Text("Pokemon")),
+                          BottomNavigationBarItem(
+                              icon: Icon(Icons.add_box), title: Text("Moves")),
+                          BottomNavigationBarItem(
+                              icon: Icon(Icons.assignment_returned),
+                              title: Text("Items")),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
