@@ -142,6 +142,7 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.grey.withOpacity(0.3),
                           borderRadius: BorderRadius.all(Radius.circular(20))),
                       child: TextField(
+                        autofocus: false,
                         decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.search,

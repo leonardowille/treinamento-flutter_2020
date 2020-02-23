@@ -106,22 +106,45 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
 
     return !_showPokemonDetails
         ? Container()
-        : Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.8,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(70),
-                    topRight: Radius.circular(70)),
-                color: Colors.white,
+        : Stack(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(70),
+                        topRight: Radius.circular(70)),
+                    color: Colors.white,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 50),
+                    child: _mainComponent(),
+                  ),
+                ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: _mainComponent(),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: InkWell(
+                    onTap: () => {Navigator.pop(context)},
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: RotatedBox(
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          color: Colors.white,
+                        ),
+                        quarterTurns: 3,
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           );
   }
 
