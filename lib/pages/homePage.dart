@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex_app/api/pokemonApi.dart';
 import 'package:pokedex_app/models/pokemon.dart';
-import 'package:pokedex_app/uiComponents/loader.dart';
-import 'package:pokedex_app/uiComponents/pokemonListItem.dart';
+import 'package:pokedex_app/pages/pokemonListPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,6 +8,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  PokemonListPage pokemonListPage = PokemonListPage();
   List<Pokemon> _pokemons;
   List<Pokemon> _pokemonsFiltered;
   TextEditingController _filterInputController = TextEditingController();
@@ -40,30 +39,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  _getPokemons() async {
-    _pokemons = await PokemonApi().getPokemons();
-    _pokemonsFiltered = _pokemons;
-    setState(() {});
-  }
-
   Widget _mainContainer() {
-    if (_pokemonsFiltered == null) {
-      _getPokemons();
-      return Loader();
-    }
-
     switch (_currentIndex) {
       case 0:
         return Padding(
           padding: const EdgeInsets.only(top: 100),
-          child: Container(
-            child: ListView.builder(
-              itemCount: _pokemonsFiltered.length,
-              itemBuilder: (context, index) {
-                return PokemonListItem(pokemon: _pokemonsFiltered[index]);
-              },
-            ),
-          ),
+          child: pokemonListPage,
         );
       default:
         return Center(child: Text("TODO"));
@@ -194,7 +175,10 @@ class _HomePageState extends State<HomePage> {
         child: Stack(
           children: <Widget>[
             _appBar(),
-            _mainContainer(),
+            AnimatedSwitcher(
+              duration: Duration(milliseconds: 300),
+              child: _mainContainer(),
+            ),
           ],
         ),
       ),
